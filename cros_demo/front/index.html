@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cross-Origin Request Example</title>
+</head>
+<body>
+<h1>Cross-Origin Request Example</h1>
+
+<!--<form method="get" action="http://localhost:8877/cros/smoke">-->
+<!--    <button type="submit">send</button>-->
+<!--</form>-->
+
+<button onclick="sendCrossOriginRequest()">test cros</button>
+
+<script>
+  // 发送跨域 GET 请求
+  function sendCrossOriginRequest() {
+    // 创建一个新的 XMLHttpRequest 对象
+    var xhr = new XMLHttpRequest();
+
+    // 配置请求
+    xhr.open('GET', 'http://localhost:8080/cros/smoke', true);
+    xhr.setRequestHeader("Yi-Token", "fasdfasfasfsadfas")
+    // 监听请求状态变化
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          // 请求成功
+          console.log('Response:', xhr.responseText);
+        } else {
+          // 请求失败
+          console.error('Request failed with status:', xhr.status);
+        }
+      }
+    };
+
+    // 发送请求
+    xhr.send();
+  }
+
+  // // 在页面加载完成后发送跨域请求
+  // window.onload = function() {
+  //   sendCrossOriginRequest();
+  // };
+</script>
+</body>
+</html>
