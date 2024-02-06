@@ -1,0 +1,93 @@
+basePath: /api/v1
+definitions:
+  controller.LoginReq:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  controller.LoginResp:
+    properties:
+      token:
+        type: string
+    type: object
+  ret.Result:
+    properties:
+      code:
+        type: integer
+      data: {}
+      msg:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: xueduan.li@gmail.com
+    name: lixd
+    url: https://lixueduan.com
+  description: This is a sample server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://lixueduan.com
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /hello:
+    get:
+      consumes:
+      - application/json
+      description: 向你说Hello
+      parameters:
+      - description: 人名
+        in: query
+        name: who
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"msg": "hello  lixd"}'
+          schema:
+            type: string
+        "400":
+          description: '{"msg": "who    are  you"}'
+          schema:
+            type: string
+      summary: 测试SayHello
+      tags:
+      - 测试
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 登入
+      parameters:
+      - description: 用户名密码
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/controller.LoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token
+          schema:
+            allOf:
+            - $ref: '#/definitions/ret.Result'
+            - properties:
+                data:
+                  $ref: '#/definitions/controller.LoginResp'
+              type: object
+        "400":
+          description: 错误提示
+          schema:
+            $ref: '#/definitions/ret.Result'
+      summary: 登陆
+      tags:
+      - 登陆注册
+swagger: "2.0"

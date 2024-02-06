@@ -26,7 +26,7 @@ type Info struct {
 }
 
 func main() {
-	name := "jack"
+	name := "heihei"
 	u := new(User)
 	_, err := pg.Engine.SQL("select id,name,age from public.user where name = ?", name).Get(u)
 	if err != nil {

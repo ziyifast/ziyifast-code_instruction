@@ -1,0 +1,14 @@
+info:
+  contact: {}
+paths:
+  /user/getAll:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有用户信息
+      produces:
+      - application/json
+      responses: {}
+      tags:
+      - 用户
+swagger: "2.0"

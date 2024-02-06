@@ -1,0 +1,23 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/user/getAll": {
+            "get": {
+                "description": "获取所有用户信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "responses": {}
+            }
+        }
+    }
+}
