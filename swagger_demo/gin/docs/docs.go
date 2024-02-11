@@ -9,12 +9,7 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "https://lixueduan.com",
-        "contact": {
-            "name": "lixd",
-            "url": "https://lixueduan.com",
-            "email": "xueduan.li@gmail.com"
-        },
+        "contact": {},
         "license": {
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
