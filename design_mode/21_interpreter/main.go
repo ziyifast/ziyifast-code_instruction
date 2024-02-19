@@ -87,54 +87,6 @@ func (p *Parser) Result() Expression {
 	return p.prev
 }
 
-//	func (p *Parser) Parse(exp string) {
-//		p.exp = strings.Split(exp, " ")
-//
-//		for {
-//			if p.index >= len(p.exp) {
-//				return
-//			}
-//			switch p.exp[p.index] {
-//			case "+":
-//				p.prev = p.newAdditionExpression()
-//			case "-":
-//				p.prev = p.newSubtractionExpression()
-//			default:
-//				p.prev = p.newNumberExpression()
-//			}
-//		}
-//	}
-//
-//	func (p *Parser) newAdditionExpression() Expression {
-//		p.index++
-//		return &AdditionExpression{
-//			left:  p.prev,
-//			right: p.newNumberExpression(),
-//		}
-//	}
-//
-//	func (p *Parser) newSubtractionExpression() Expression {
-//		p.index++
-//		return &SubtractionExpression{
-//			left:  p.prev,
-//			right: p.newNumberExpression(),
-//		}
-//	}
-//
-//	func (p *Parser) newNumberExpression() Expression {
-//		v, _ := strconv.Atoi(p.exp[p.index])
-//		p.index++
-//		return &NumberExpression{
-//			val: v,
-//		}
-//	}
-//
-// // Result 返回Expression实例
-// // 调用Interpret方法会从右向左递归计算出公式结果
-//
-//	func (p *Parser) Result() Expression {
-//		return p.prev
-//	}
 func main() {
 	p := &Parser{}
 	p.Parse("1 + 3 + 3 + 3 - 3")
