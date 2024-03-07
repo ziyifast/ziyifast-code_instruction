@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/aobco/log"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"github.com/ziyifast/log"
+	"myTest/demo_home/iris_demo/constant"
 	"myTest/demo_home/iris_demo/controller"
 	"myTest/demo_home/iris_demo/route"
 	"myTest/demo_home/iris_demo/util"
@@ -13,7 +14,6 @@ import (
 
 var (
 	signaturePrefix = "/yi/sign/"
-	SessionMgr      *sessions.Sessions
 )
 
 func main() {
@@ -25,9 +25,9 @@ func main() {
 func initSession() {
 	sessionCfg := sessions.Config{
 		Cookie:  "test",
-		Expires: time.Duration(60) * time.Minute,
+		Expires: time.Duration(10) * time.Second,
 	}
-	SessionMgr = sessions.New(sessionCfg)
+	constant.SessionMgr = sessions.New(sessionCfg)
 }
 
 func initMvcHandle(app *iris.Application) {
@@ -37,7 +37,7 @@ func initMvcHandle(app *iris.Application) {
 		myMvc := mvc.New(app.Party(v.RouteName))
 		myMvc.Router.Use(v.MiddlewareSlice...)
 		myMvc.Router.Done(v.DoneHandleSlice...)
-		myMvc.Register(SessionMgr.Start)
+		myMvc.Register(constant.SessionMgr.Start)
 		myMvc.Handle(v.ControllerObj)
 	}
 }
