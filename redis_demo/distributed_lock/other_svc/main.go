@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/go-redis/redis/v8"
 	"github.com/kataras/iris/v12"
 	context2 "github.com/kataras/iris/v12/context"
@@ -29,7 +30,8 @@ func main() {
 		c.JSON("ok port:9999")
 	})
 	app.Get("/count", func(c *context2.Context) {
-		c.JSON(svcCount2.Load())
+		count := svcCount2.Load()
+		c.JSON(fmt.Sprintf("%d", count))
 	})
 	app.Listen(":9999", nil)
 }
