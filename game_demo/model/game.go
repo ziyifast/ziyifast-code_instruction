@@ -46,6 +46,9 @@ func (g *Game) Update() error {
 	g.input.Update(g)
 	//更新子弹位置
 	for b := range g.bullets {
+		if b.outOfScreen() {
+			delete(g.bullets, b)
+		}
 		b.y -= b.speedFactor
 	}
 	return nil

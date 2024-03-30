@@ -2,9 +2,11 @@ package model
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
+	"time"
 )
 
 type Input struct {
+	lastBulletTime time.Time //上次子弹发射时间，避免用户一直按着连续发子弹
 }
 
 func (i *Input) Update(g *Game) {
@@ -25,8 +27,11 @@ func (i *Input) Update(g *Game) {
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeySpace) {
-		//发射子弹
-		bullet := NewBullet(cfg, s)
-		g.addBullet(bullet)
+		if len(g.bullets) < cfg.MaxBulletNum && time.Since(i.lastBulletTime).Milliseconds() > cfg.BulletInterval {
+			//发射子弹
+			bullet := NewBullet(cfg, s)
+			g.addBullet(bullet)
+			i.lastBulletTime = time.Now()
+		}
 	}
 }

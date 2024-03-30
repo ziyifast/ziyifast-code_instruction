@@ -35,3 +35,7 @@ func (b *Bullet) Draw(screen *ebiten.Image) {
 	op.GeoM.Translate(float64(b.x), float64(b.y))
 	screen.DrawImage(b.image, op)
 }
+
+func (b *Bullet) outOfScreen() bool {
+	return b.y < -b.height
+}

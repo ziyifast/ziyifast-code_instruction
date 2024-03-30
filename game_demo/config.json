@@ -17,5 +17,7 @@
     "g": 80,
     "b": 80,
     "a": 255
-  }
+  },
+  "max_bullet_num": 10,
+  "bullet_interval": 50
 }
