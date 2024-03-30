@@ -8,11 +8,8 @@ import (
 )
 
 type Alien struct {
+	GameObj
 	img         *ebiten.Image
-	width       int
-	height      int
-	x           int
-	y           int
 	speedFactor int
 }
 
@@ -22,18 +19,19 @@ func NewAlien(cfg *config.Config) *Alien {
 		log.Fatal("%v", err)
 	}
 	width, height := image.Bounds().Dx(), image.Bounds().Dy()
-	return &Alien{
+	a := &Alien{
 		img:         image,
-		width:       width,
-		height:      height,
-		x:           0,
-		y:           0,
 		speedFactor: cfg.AlienSpeedFactor,
 	}
+	a.GameObj.width = width
+	a.GameObj.height = height
+	a.GameObj.x = 0
+	a.GameObj.y = 0
+	return a
 }
 
 func (a *Alien) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(a.x), float64(a.y))
+	op.GeoM.Translate(float64(a.X()), float64(a.Y()))
 	screen.DrawImage(a.img, op)
 }
