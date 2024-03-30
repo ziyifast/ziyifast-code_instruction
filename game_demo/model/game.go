@@ -6,9 +6,6 @@ import (
 	"ziyi.game.com/config"
 )
 
-type Input struct {
-}
-
 type Game struct {
 	input  *Input
 	ship   *Ship
@@ -22,7 +19,7 @@ func NewGame() *Game {
 	ebiten.SetWindowTitle(c.Title)
 	return &Game{
 		input:  &Input{},
-		ship:   NewShip(),
+		ship:   NewShip(c.ScreenWidth, c.ScreenHeight),
 		config: c,
 	}
 }
@@ -40,5 +37,6 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 func (g *Game) Update() error {
+	g.input.Update(g.ship, g.config)
 	return nil
 }

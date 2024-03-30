@@ -1,11 +1,12 @@
 {
-  "screenWidth": 640,
-  "screenHeight": 480,
+  "screen_width": 640,
+  "screen_height": 480,
   "title": "alien attack",
-  "bgColor": {
+  "bg_color": {
     "r": 230,
     "g": 230,
     "b": 230,
     "a": 255
-  }
+  },
+  "move_speed": 10
 }
