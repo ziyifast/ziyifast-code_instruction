@@ -1,0 +1,11 @@
+{
+  "screenWidth": 640,
+  "screenHeight": 480,
+  "title": "alien attack",
+  "bgColor": {
+    "r": 230,
+    "g": 230,
+    "b": 230,
+    "a": 255
+  }
+}

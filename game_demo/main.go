@@ -4,6 +4,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/ziyifast/log"
+	"ziyi.game.com/model"
 )
 
 type Game struct {
@@ -22,9 +23,8 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 func main() {
-	ebiten.SetWindowSize(640, 480)
-	ebiten.SetWindowTitle("alien attack")
-	if err := ebiten.RunGame(&Game{}); err != nil {
+	err := ebiten.RunGame(model.NewGame())
+	if err != nil {
 		log.Fatal("%v", err)
 	}
 }
