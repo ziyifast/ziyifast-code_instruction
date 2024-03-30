@@ -8,5 +8,14 @@
     "b": 230,
     "a": 255
   },
-  "move_speed": 10
+  "move_speed": 10,
+  "bullet_speed": 5,
+  "bullet_width": 5,
+  "bullet_height": 7,
+  "bullet_color": {
+    "r": 80,
+    "g": 80,
+    "b": 80,
+    "a": 255
+  }
 }

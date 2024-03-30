@@ -13,6 +13,10 @@ type Config struct {
 	Title        string     `json:"title"`
 	BgColor      color.RGBA `json:"bg_color"`
 	MoveSpeed    int        `json:"move_speed"`
+	BulletWidth  int        `json:"bullet_width"`
+	BulletHeight int        `json:"bullet_height"`
+	BulletSpeed  int        `json:"bullet_speed"`
+	BulletColor  color.RGBA `json:"bullet_color"`
 }
 
 func LoadConfig() *Config {

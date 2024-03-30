@@ -2,13 +2,14 @@ package model
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
-	"ziyi.game.com/config"
 )
 
 type Input struct {
 }
 
-func (i *Input) Update(s *Ship, cfg *config.Config) {
+func (i *Input) Update(g *Game) {
+	cfg := g.config
+	s := g.ship
 	//listen the key event
 	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
 		s.x -= cfg.MoveSpeed
@@ -21,5 +22,11 @@ func (i *Input) Update(s *Ship, cfg *config.Config) {
 		if s.x > cfg.ScreenWidth-s.width/2 {
 			s.x = cfg.ScreenWidth - s.width/2
 		}
+	}
+
+	if ebiten.IsKeyPressed(ebiten.KeySpace) {
+		//发射子弹
+		bullet := NewBullet(cfg, s)
+		g.addBullet(bullet)
 	}
 }
