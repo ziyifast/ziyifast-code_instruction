@@ -23,5 +23,6 @@
   "alien_speed_factor": 1,
   "title_font_size": 15,
   "font_size": 8,
-  "small_font_size": 3
+  "small_font_size": 3,
+  "failed_count": 2
 }

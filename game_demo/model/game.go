@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/examples/resources/fonts"
 	"github.com/hajimehoshi/ebiten/v2/text"
@@ -27,11 +26,16 @@ type Game struct {
 	bullets     map[*Bullet]struct{}
 	aliens      map[*Alien]struct{}
 	mode        Mode
-	failedCount int //记录失败次数（未击中的次数）
+	failedCount int
 }
 
 func (g *Game) init() {
-	fmt.Println("恢复初始状态...")
+	g.mode = ModeTitle
+	g.failedCount = 0
+	g.bullets = make(map[*Bullet]struct{})
+	g.aliens = make(map[*Alien]struct{})
+	g.ship = NewShip(g.config.ScreenWidth, g.config.ScreenHeight)
+	g.createAliens()
 }
 
 func NewGame() *Game {
@@ -40,11 +44,12 @@ func NewGame() *Game {
 	ebiten.SetWindowSize(c.ScreenWidth, c.ScreenHeight)
 	ebiten.SetWindowTitle(c.Title)
 	g := &Game{
-		input:   &Input{},
-		ship:    NewShip(c.ScreenWidth, c.ScreenHeight),
-		config:  c,
-		bullets: make(map[*Bullet]struct{}),
-		aliens:  map[*Alien]struct{}{},
+		input:       &Input{},
+		ship:        NewShip(c.ScreenWidth, c.ScreenHeight),
+		config:      c,
+		bullets:     make(map[*Bullet]struct{}),
+		aliens:      make(map[*Alien]struct{}),
+		failedCount: c.FailedCount,
 	}
 	//初始化外星人
 	g.createAliens()
@@ -96,7 +101,6 @@ func (g *Game) Update() error {
 			g.mode = ModeGame
 		}
 	case ModeGame:
-
 		log.Infof("update....")
 		g.input.Update(g)
 		//更新子弹位置
@@ -112,7 +116,10 @@ func (g *Game) Update() error {
 		}
 		//检查是否击相撞（击中敌人）
 		g.CheckKillAlien()
-		//检查是否飞机碰到外星人
+		//外星人溜走 或者 是否飞机碰到外星人
+		if g.failedCount >= 2 && g.CheckShipCrashed() {
+			g.mode = ModeOver
+		}
 
 	case ModeOver:
 		//游戏结束，恢复初始状态
@@ -153,15 +160,20 @@ func (g *Game) CheckKillAlien() {
 				delete(g.aliens, alien)
 				delete(g.bullets, bullet)
 			}
+			if alien.OutOfScreen(g.config) {
+				g.failedCount++
+			}
 		}
 	}
 }
 
-func (g *Game) CheckShipCrashed() {
+func (g *Game) CheckShipCrashed() bool {
 	for alien := range g.aliens {
 		if checkCollision(g.ship, alien) {
+			return true
 		}
 	}
+	return false
 }
 
 // 检测子弹是否击中敌人

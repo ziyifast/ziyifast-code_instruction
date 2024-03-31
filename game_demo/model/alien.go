@@ -35,3 +35,10 @@ func (a *Alien) Draw(screen *ebiten.Image) {
 	op.GeoM.Translate(float64(a.X()), float64(a.Y()))
 	screen.DrawImage(a.img, op)
 }
+
+func (a *Alien) OutOfScreen(cfg *config.Config) bool {
+	if a.Y() > cfg.ScreenHeight {
+		return true
+	}
+	return false
+}

@@ -23,6 +23,7 @@ type Config struct {
 	TitleFontSize    int        `json:"title_font_size"`
 	FontSize         int        `json:"font_size"`
 	SmallFontSize    int        `json:"small_font_size"`
+	FailedCount      int        `json:"failed_count"`
 }
 
 func LoadConfig() *Config {
