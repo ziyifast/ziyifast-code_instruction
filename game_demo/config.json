@@ -20,5 +20,8 @@
   },
   "max_bullet_num": 10,
   "bullet_interval": 50,
-  "alien_speed_factor": 1
+  "alien_speed_factor": 1,
+  "title_font_size": 15,
+  "font_size": 8,
+  "small_font_size": 3
 }

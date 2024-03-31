@@ -23,8 +23,8 @@ func NewBullet(cfg *config.Config, ship *Ship) *Bullet {
 	}
 	b.GameObj.width = cfg.BulletWidth
 	b.GameObj.height = cfg.BulletHeight
-	b.GameObj.y = ship.y + (ship.height-cfg.BulletHeight)/2
-	b.GameObj.x = ship.x + (ship.width-cfg.BulletWidth)/2
+	b.GameObj.y = ship.Y() + (ship.Height()-cfg.BulletHeight)/2
+	b.GameObj.x = ship.X() + (ship.Width()-cfg.BulletWidth)/2
 	return b
 }
 

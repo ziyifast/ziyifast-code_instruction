@@ -9,11 +9,8 @@ import (
 )
 
 type Ship struct {
-	image  *ebiten.Image
-	width  int
-	height int
-	x      int
-	y      int
+	GameObj
+	image *ebiten.Image
 }
 
 func NewShip(screenWidth, screenHeight int) *Ship {
@@ -22,20 +19,21 @@ func NewShip(screenWidth, screenHeight int) *Ship {
 		log.Fatalf("%v", err)
 	}
 	width, height := image.Bounds().Dx(), image.Bounds().Dy()
-	return &Ship{
-		image:  image,
-		width:  width,
-		height: height,
-		x:      screenWidth / 2,
-		y:      screenHeight - height,
+	s := &Ship{
+		image: image,
 	}
+	s.GameObj.width = width
+	s.GameObj.height = height
+	s.GameObj.x = screenWidth / 2
+	s.GameObj.y = screenHeight - height
+	return s
 }
 
 func (ship *Ship) Draw(screen *ebiten.Image, cfg *config.Config) {
 	// draw by self
 	op := &ebiten.DrawImageOptions{}
 	//init ship at the screen center
-	op.GeoM.Translate(float64(ship.x), float64(ship.y))
-	log.Infof("x[%v] y[%v]", float64(ship.x), float64(ship.y))
+	op.GeoM.Translate(float64(ship.X()), float64(ship.Y()))
+	log.Infof("x[%v] y[%v]", float64(ship.X()), float64(ship.Y()))
 	screen.DrawImage(ship.image, op)
 }
