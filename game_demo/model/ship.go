@@ -14,7 +14,7 @@ type Ship struct {
 }
 
 func NewShip(screenWidth, screenHeight int) *Ship {
-	image, _, err := ebitenutil.NewImageFromFile("/Users/ziyi2/GolandProjects/MyTest/demo_home/game_demo/images/ship.bmp")
+	image, _, err := ebitenutil.NewImageFromFile("/Users/ziyi2/GolandProjects/MyTest/demo_home/game_demo/images/gopher.bmp")
 	if err != nil {
 		log.Fatalf("%v", err)
 	}
@@ -34,6 +34,5 @@ func (ship *Ship) Draw(screen *ebiten.Image, cfg *config.Config) {
 	op := &ebiten.DrawImageOptions{}
 	//init ship at the screen center
 	op.GeoM.Translate(float64(ship.X()), float64(ship.Y()))
-	log.Infof("x[%v] y[%v]", float64(ship.X()), float64(ship.Y()))
 	screen.DrawImage(ship.image, op)
 }

@@ -8,6 +8,8 @@ import (
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/opentype"
 	"image/color"
+	"math/rand"
+	"time"
 	"ziyi.game.com/config"
 )
 
@@ -18,6 +20,13 @@ const (
 	ModeGame
 	ModeOver
 )
+
+var r *rand.Rand
+
+func init() {
+	source := rand.NewSource(time.Now().UnixMicro())
+	r = rand.New(source)
+}
 
 type Game struct {
 	input       *Input
@@ -49,7 +58,7 @@ func NewGame() *Game {
 		config:      c,
 		bullets:     make(map[*Bullet]struct{}),
 		aliens:      make(map[*Alien]struct{}),
-		failedCount: c.FailedCount,
+		failedCount: 0,
 	}
 	//初始化外星人
 	g.createAliens()
@@ -66,8 +75,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		texts = []string{"", "", "", "", "", "", "", "PRESS SPACE KEY", "", "OR LEFT MOUSE"}
 	case ModeGame:
 		//set screen color
-		screen.Fill(g.config.BgColor)
-		//draw ship
+		//screen.Fill(g.config.BgColor)
+		screen.Fill(color.Black)
+		//draw gopher
 		g.ship.Draw(screen, g.config)
 		//draw bullet
 		for b := range g.bullets {
@@ -78,15 +88,27 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			a.Draw(screen)
 		}
 	case ModeOver:
+		screen.Fill(color.Black)
+		g.Update()
 		texts = []string{"", "GAME OVER!"}
 	}
 	for i, l := range titleTexts {
 		x := (g.config.ScreenWidth - len(l)*g.config.TitleFontSize) / 2
-		text.Draw(screen, l, titleArcadeFont, x, (i+4)*g.config.TitleFontSize, color.White)
+		text.Draw(screen, l, titleArcadeFont, x, (i+4)*g.config.TitleFontSize, color.RGBA{
+			R: 0,
+			G: 100,
+			B: 0,
+			A: 0,
+		})
 	}
 	for i, l := range texts {
 		x := (g.config.ScreenWidth - len(l)*g.config.FontSize) / 2
-		text.Draw(screen, l, arcadeFont, x, (i+4)*g.config.FontSize, color.White)
+		text.Draw(screen, l, arcadeFont, x, (i+4)*g.config.FontSize, color.RGBA{
+			R: 0,
+			G: 100,
+			B: 0,
+			A: 0,
+		})
 	}
 }
 
@@ -101,7 +123,6 @@ func (g *Game) Update() error {
 			g.mode = ModeGame
 		}
 	case ModeGame:
-		log.Infof("update....")
 		g.input.Update(g)
 		//更新子弹位置
 		for b := range g.bullets {
@@ -117,10 +138,17 @@ func (g *Game) Update() error {
 		//检查是否击相撞（击中敌人）
 		g.CheckKillAlien()
 		//外星人溜走 或者 是否飞机碰到外星人
-		if g.failedCount >= 2 && g.CheckShipCrashed() {
+		if g.failedCount >= 2 || g.CheckShipCrashed() {
 			g.mode = ModeOver
+			log.Warnf("over..........")
 		}
-
+		log.Infof("===========================%v", len(g.aliens))
+		go func() {
+			if len(g.aliens) < 0 {
+				//下一波怪物
+				g.createAliens()
+			}
+		}()
 	case ModeOver:
 		//游戏结束，恢复初始状态
 		if g.input.IsKeyPressed() {
@@ -138,13 +166,14 @@ func (g *Game) addBullet(bullet *Bullet) {
 
 func (g *Game) createAliens() {
 	a := NewAlien(g.config)
-	//外星人之间需要有间隔
+	//怪物之间需要有间隔
 	availableSpaceX := g.config.ScreenWidth - 2*a.Width()
 	numAliens := availableSpaceX / (2 * a.Width())
+	//预设怪物数量
 	for i := 0; i < numAliens; i++ {
 		alien := NewAlien(g.config)
 		alien.x = alien.Width() + 2*alien.Width()*i
-		alien.y = alien.Height()
+		alien.y = alien.Height() + r.Intn(g.config.ScreenHeight/10)
 		g.addAliens(alien)
 	}
 }
@@ -154,15 +183,17 @@ func (g *Game) addAliens(alien *Alien) {
 }
 
 func (g *Game) CheckKillAlien() {
+	log.Infof("+++++++++%v", g.failedCount)
 	for alien := range g.aliens {
 		for bullet := range g.bullets {
 			if checkCollision(bullet, alien) {
 				delete(g.aliens, alien)
 				delete(g.bullets, bullet)
 			}
-			if alien.OutOfScreen(g.config) {
-				g.failedCount++
-			}
+		}
+		if alien.OutOfScreen(g.config) {
+			g.failedCount++
+			delete(g.aliens, alien)
 		}
 	}
 }

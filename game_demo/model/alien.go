@@ -14,7 +14,7 @@ type Alien struct {
 }
 
 func NewAlien(cfg *config.Config) *Alien {
-	image, _, err := ebitenutil.NewImageFromFile("/Users/ziyi2/GolandProjects/MyTest/demo_home/game_demo/images/alien.bmp")
+	image, _, err := ebitenutil.NewImageFromFile("/Users/ziyi2/GolandProjects/MyTest/demo_home/game_demo/images/monster.bmp")
 	if err != nil {
 		log.Fatal("%v", err)
 	}
@@ -37,7 +37,8 @@ func (a *Alien) Draw(screen *ebiten.Image) {
 }
 
 func (a *Alien) OutOfScreen(cfg *config.Config) bool {
-	if a.Y() > cfg.ScreenHeight {
+	log.Infof("a.Y():%v", a.Y())
+	if a.Y()+a.Height() > cfg.ScreenHeight {
 		return true
 	}
 	return false
