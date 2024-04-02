@@ -29,13 +29,14 @@ func init() {
 }
 
 type Game struct {
-	input       *Input
-	ship        *Ship
-	config      *config.Config
-	bullets     map[*Bullet]struct{}
-	aliens      map[*Alien]struct{}
-	mode        Mode
-	failedCount int
+	input            *Input
+	ship             *Ship
+	config           *config.Config
+	bullets          map[*Bullet]struct{}
+	aliens           map[*Alien]struct{}
+	mode             Mode
+	failedCountLimit int
+	failedCount      int
 }
 
 func (g *Game) init() {
@@ -53,12 +54,13 @@ func NewGame() *Game {
 	ebiten.SetWindowSize(c.ScreenWidth, c.ScreenHeight)
 	ebiten.SetWindowTitle(c.Title)
 	g := &Game{
-		input:       &Input{},
-		ship:        NewShip(c.ScreenWidth, c.ScreenHeight),
-		config:      c,
-		bullets:     make(map[*Bullet]struct{}),
-		aliens:      make(map[*Alien]struct{}),
-		failedCount: 0,
+		input:            &Input{},
+		ship:             NewShip(c.ScreenWidth, c.ScreenHeight),
+		config:           c,
+		bullets:          make(map[*Bullet]struct{}),
+		aliens:           make(map[*Alien]struct{}),
+		failedCount:      0,
+		failedCountLimit: c.FailedCountLimit,
 	}
 	//初始化外星人
 	g.createAliens()
@@ -75,8 +77,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		texts = []string{"", "", "", "", "", "", "", "PRESS SPACE KEY", "", "OR LEFT MOUSE"}
 	case ModeGame:
 		//set screen color
-		//screen.Fill(g.config.BgColor)
-		screen.Fill(color.Black)
+		screen.Fill(g.config.BgColor)
 		//draw gopher
 		g.ship.Draw(screen, g.config)
 		//draw bullet
@@ -138,7 +139,7 @@ func (g *Game) Update() error {
 		//检查是否击相撞（击中敌人）
 		g.CheckKillAlien()
 		//外星人溜走 或者 是否飞机碰到外星人
-		if g.failedCount >= 2 || g.CheckShipCrashed() {
+		if g.failedCount >= g.failedCountLimit || g.CheckShipCrashed() {
 			g.mode = ModeOver
 			log.Warnf("over..........")
 		}

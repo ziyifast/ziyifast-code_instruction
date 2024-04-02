@@ -23,7 +23,7 @@ type Config struct {
 	TitleFontSize    int        `json:"title_font_size"`
 	FontSize         int        `json:"font_size"`
 	SmallFontSize    int        `json:"small_font_size"`
-	FailedCount      int        `json:"failed_count"`
+	FailedCountLimit int        `json:"failed_count_limit"` //最多能遗漏多少怪物
 }
 
 func LoadConfig() *Config {
