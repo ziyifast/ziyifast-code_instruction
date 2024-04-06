@@ -7,21 +7,21 @@ import (
 	"ziyi.game.com/config"
 )
 
-type Alien struct {
+type Monster struct {
 	GameObj
 	img         *ebiten.Image
 	speedFactor int
 }
 
-func NewAlien(cfg *config.Config) *Alien {
+func NewMonster(cfg *config.Config) *Monster {
 	image, _, err := ebitenutil.NewImageFromFile("/Users/ziyi2/GolandProjects/MyTest/demo_home/game_demo/images/monster.bmp")
 	if err != nil {
 		log.Fatal("%v", err)
 	}
 	width, height := image.Bounds().Dx(), image.Bounds().Dy()
-	a := &Alien{
+	a := &Monster{
 		img:         image,
-		speedFactor: cfg.AlienSpeedFactor,
+		speedFactor: cfg.MonsterSpeedFactor,
 	}
 	a.GameObj.width = width
 	a.GameObj.height = height
@@ -30,14 +30,13 @@ func NewAlien(cfg *config.Config) *Alien {
 	return a
 }
 
-func (a *Alien) Draw(screen *ebiten.Image) {
+func (a *Monster) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(float64(a.X()), float64(a.Y()))
 	screen.DrawImage(a.img, op)
 }
 
-func (a *Alien) OutOfScreen(cfg *config.Config) bool {
-	log.Infof("a.Y():%v", a.Y())
+func (a *Monster) OutOfScreen(cfg *config.Config) bool {
 	if a.Y()+a.Height() > cfg.ScreenHeight {
 		return true
 	}

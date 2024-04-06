@@ -1,7 +1,7 @@
 {
   "screen_width": 640,
   "screen_height": 480,
-  "title": "alien attack",
+  "title": "ziyi game",
   "bg_color": {
     "r": 255,
     "g": 255,
@@ -20,7 +20,7 @@
   },
   "max_bullet_num": 10,
   "bullet_interval": 50,
-  "alien_speed_factor": 1,
+  "monster_speed_factor": 1,
   "title_font_size": 15,
   "font_size": 8,
   "small_font_size": 3,

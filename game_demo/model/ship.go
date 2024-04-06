@@ -14,7 +14,7 @@ type Ship struct {
 }
 
 func NewShip(screenWidth, screenHeight int) *Ship {
-	image, _, err := ebitenutil.NewImageFromFile("/Users/ziyi2/GolandProjects/MyTest/demo_home/game_demo/images/gopher.bmp")
+	image, _, err := ebitenutil.NewImageFromFile("/Users/ziyi2/GolandProjects/MyTest/demo_home/game_demo/images/ship.bmp")
 	if err != nil {
 		log.Fatalf("%v", err)
 	}

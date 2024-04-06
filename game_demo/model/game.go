@@ -33,7 +33,7 @@ type Game struct {
 	ship             *Ship
 	config           *config.Config
 	bullets          map[*Bullet]struct{}
-	aliens           map[*Alien]struct{}
+	monsters         map[*Monster]struct{}
 	mode             Mode
 	failedCountLimit int
 	failedCount      int
@@ -43,9 +43,9 @@ func (g *Game) init() {
 	g.mode = ModeTitle
 	g.failedCount = 0
 	g.bullets = make(map[*Bullet]struct{})
-	g.aliens = make(map[*Alien]struct{})
+	g.monsters = make(map[*Monster]struct{})
 	g.ship = NewShip(g.config.ScreenWidth, g.config.ScreenHeight)
-	g.createAliens()
+	g.createMonsters()
 }
 
 func NewGame() *Game {
@@ -58,12 +58,12 @@ func NewGame() *Game {
 		ship:             NewShip(c.ScreenWidth, c.ScreenHeight),
 		config:           c,
 		bullets:          make(map[*Bullet]struct{}),
-		aliens:           make(map[*Alien]struct{}),
+		monsters:         make(map[*Monster]struct{}),
 		failedCount:      0,
 		failedCountLimit: c.FailedCountLimit,
 	}
 	//初始化外星人
-	g.createAliens()
+	g.createMonsters()
 	g.CreateFonts()
 	return g
 }
@@ -73,7 +73,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	var texts []string
 	switch g.mode {
 	case ModeTitle:
-		titleTexts = []string{"ALIEN INVASION"}
+		titleTexts = []string{"RUN GOPHER"}
 		texts = []string{"", "", "", "", "", "", "", "PRESS SPACE KEY", "", "OR LEFT MOUSE"}
 	case ModeGame:
 		//set screen color
@@ -84,8 +84,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		for b := range g.bullets {
 			b.Draw(screen)
 		}
-		//draw aliens
-		for a := range g.aliens {
+		//draw monsters
+		for a := range g.monsters {
 			a.Draw(screen)
 		}
 	case ModeOver:
@@ -133,21 +133,20 @@ func (g *Game) Update() error {
 			b.y -= b.speedFactor
 		}
 		//更新敌人位置
-		for a := range g.aliens {
+		for a := range g.monsters {
 			a.y += a.speedFactor
 		}
 		//检查是否击相撞（击中敌人）
-		g.CheckKillAlien()
+		g.CheckKillMonster()
 		//外星人溜走 或者 是否飞机碰到外星人
 		if g.failedCount >= g.failedCountLimit || g.CheckShipCrashed() {
 			g.mode = ModeOver
 			log.Warnf("over..........")
 		}
-		log.Infof("===========================%v", len(g.aliens))
 		go func() {
-			if len(g.aliens) < 0 {
+			if len(g.monsters) < 0 {
 				//下一波怪物
-				g.createAliens()
+				g.createMonsters()
 			}
 		}()
 	case ModeOver:
@@ -165,43 +164,42 @@ func (g *Game) addBullet(bullet *Bullet) {
 	g.bullets[bullet] = struct{}{}
 }
 
-func (g *Game) createAliens() {
-	a := NewAlien(g.config)
+func (g *Game) createMonsters() {
+	a := NewMonster(g.config)
 	//怪物之间需要有间隔
 	availableSpaceX := g.config.ScreenWidth - 2*a.Width()
-	numAliens := availableSpaceX / (2 * a.Width())
+	numMonsters := availableSpaceX / (2 * a.Width())
 	//预设怪物数量
-	for i := 0; i < numAliens; i++ {
-		alien := NewAlien(g.config)
-		alien.x = alien.Width() + 2*alien.Width()*i
-		alien.y = alien.Height() + r.Intn(g.config.ScreenHeight/10)
-		g.addAliens(alien)
+	for i := 0; i < numMonsters; i++ {
+		monster := NewMonster(g.config)
+		monster.x = monster.Width() + 2*monster.Width()*i
+		monster.y = monster.Height() + r.Intn(g.config.ScreenHeight/10)
+		g.addMonsters(monster)
 	}
 }
 
-func (g *Game) addAliens(alien *Alien) {
-	g.aliens[alien] = struct{}{}
+func (g *Game) addMonsters(monster *Monster) {
+	g.monsters[monster] = struct{}{}
 }
 
-func (g *Game) CheckKillAlien() {
-	log.Infof("+++++++++%v", g.failedCount)
-	for alien := range g.aliens {
+func (g *Game) CheckKillMonster() {
+	for monster := range g.monsters {
 		for bullet := range g.bullets {
-			if checkCollision(bullet, alien) {
-				delete(g.aliens, alien)
+			if checkCollision(bullet, monster) {
+				delete(g.monsters, monster)
 				delete(g.bullets, bullet)
 			}
 		}
-		if alien.OutOfScreen(g.config) {
+		if monster.OutOfScreen(g.config) {
 			g.failedCount++
-			delete(g.aliens, alien)
+			delete(g.monsters, monster)
 		}
 	}
 }
 
 func (g *Game) CheckShipCrashed() bool {
-	for alien := range g.aliens {
-		if checkCollision(g.ship, alien) {
+	for monster := range g.monsters {
+		if checkCollision(g.ship, monster) {
 			return true
 		}
 	}
