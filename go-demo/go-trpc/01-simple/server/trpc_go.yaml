@@ -1,0 +1,7 @@
+server:
+  service:
+    - name: trpc.helloworld
+#      监听地址
+      ip: 127.0.0.1
+#      服务监听端口
+      port: 8000

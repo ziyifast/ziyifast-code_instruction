@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package trpc.helloworld;
+option go_package="github.com/go-demo/go-trpc/pb";
+
+service Greeter {
+  rpc Hello (HelloRequest) returns (HelloReply) {}
+}
+
+message HelloRequest {
+  string msg = 1;
+}
+
+message HelloReply {
+  string msg = 1;
+}
