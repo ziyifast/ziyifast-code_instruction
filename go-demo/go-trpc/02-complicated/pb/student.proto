@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package trpc.complicated;
+option go_package="ziyi.com/go-demo/go-trpc/02-complicated/pb";
+
+message Student {
+  string name = 1;
+  int32 age = 2;
+}

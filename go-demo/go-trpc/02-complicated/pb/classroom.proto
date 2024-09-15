@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package trpc.complicated;
+option go_package="ziyi.com/go-demo/go-trpc/02-complicated/pb";
+
+import "student.proto"; // 导入外部proto文件（因为两个proto文件都在同一个目录，因此这里可使用相对路径）
+
+//定义教室服务
+service ClassroomService {
+  rpc GetInfo (Request) returns (Response) {}
+}
+
+message Request {
+  int32 roomId = 1;
+}
+
+message Response {
+  Classroom classroom = 1;
+}
+
+//定义教室struct
+message Classroom {
+  int32 id = 1;
+  string name = 2;
+  string address = 3;
+  repeated Student students = 4;
+}
+

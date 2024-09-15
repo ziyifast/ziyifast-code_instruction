@@ -1,0 +1,8 @@
+server:
+  service:
+    #       服务名称
+    - name: trpc.classroom
+      #      监听地址
+      ip: 127.0.0.1
+      #      服务监听端口
+      port: 8088
