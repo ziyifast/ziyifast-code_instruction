@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package trpc.keyword;
+option go_package = "ziyi.com/go-demo/go-trpc/03-keyword/pb";
+
+// message： 定义结构体，类比go中的type
+message Request {
+  // optional： 可选字段
+  optional string reqCreateTime = 1;
+  map<string, string> reqInfo = 2;
+}
+
+message Response {
+  map<string, string> rspInfo = 1;
+}
+
+message Classroom{
+  string name = 1;
+  //repeated 列表（切片）
+  repeated int32 studentIds = 2;
+}
+
+// service ： 定义服务
+service KeywordService {
+  rpc GetKeyword(Request) returns (Response);
+}
+
+enum ResponseCode {
+  OK = 0;
+  FAIL = 1;
+  INVALID_PARAM = 2;
+}
