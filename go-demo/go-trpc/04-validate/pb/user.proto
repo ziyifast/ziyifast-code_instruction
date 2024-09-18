@@ -1,0 +1,20 @@
+syntax = "proto3";
+package validate;
+option go_package = "ziyi.com/go-demo/go-trpc/04-validate/pb";
+import "validate.proto"; //这里使用的是相对路径，因此需要和validate.proto在同一个目录下，且package都为validate包
+
+
+service UserService {
+  rpc GetUser(User) returns (User);
+}
+
+message User {
+  // uid 是用户的唯一标识符，它必须大于999
+  uint64 uid = 1 [(validate.rules).uint64.gt = 999];
+
+  // email 是用户的电子邮件地址，它必须是一个有效的电子邮件地址
+  string email = 2 [(validate.rules).string.email = true];
+
+  // phone 是用户的电话号码，它必须符合中国大陆的手机号码格式
+  string phone = 3 [(validate.rules).string = {pattern: "^1[3456789]\\d{9}$"}];
+}
