@@ -1,0 +1,15 @@
+syntax = "proto3";
+package validate.self;
+
+import "validate.proto";
+
+import "google/protobuf/empty.proto";
+
+message User {
+  string name = 1 [(validate.rules).string.pstr = true]; // 确保此处字段与 validate.proto 中定义的 pstr 匹配
+//  string name = 1 [(validate.rules).string = {in: ["foo", "bar", "baz"]}]; // 确保此处字段与 validate.proto 中定义的 pstr 匹配
+}
+
+service UserService {
+  rpc Handle(User) returns (google.protobuf.Empty) {}
+}
