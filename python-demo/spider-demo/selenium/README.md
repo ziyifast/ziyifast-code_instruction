@@ -17,8 +17,6 @@ pip install selenium
 ```
 
 
-
-
 ### 实战
 > 代码参考：selenium/01_selenium_demo.py
 
@@ -28,6 +26,7 @@ pip install selenium
 
 ## 2 selenium + phantomjs
 ### 介绍
+> PhantomJS 是一个无头浏览器，它提供了一个可编程的JavaScript API，允许开发者在没有用户界面的情况下执行浏览器相关的操作。由于不进行css和gui渲染，运行效率要比真实的浏览器要快很多。
 
 ### 环境安装
 > 下载地址：https://phantomjs.org/download.html
@@ -61,3 +60,4 @@ pip install selenium==2.48.0
 
 
 ### 实战
+> 代码参考：selenium/03_chrome_headless_demo.py
