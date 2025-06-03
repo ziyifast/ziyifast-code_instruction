@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ziyi-页面分析助手</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>ziyi-页面分析助手</h1>
+    
+    <div class="stats-container">
+      <div class="stat-card">
+        <h2>字数统计</h2>
+        <p id="word-count">0</p>
+      </div>
+      
+      <div class="stat-card">
+        <h2>阅读时间</h2>
+        <p id="reading-time">0分钟</p>
+      </div>
+    </div>
+    
+    <div class="keywords-container">
+      <h2>关键词</h2>
+      <div id="keywords-list"></div>
+    </div>
+    
+    <button id="analyze-btn">分析当前页面</button>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
